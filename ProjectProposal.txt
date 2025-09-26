@@ -28,7 +28,10 @@ Calvin (CS):  - Intro page
               - Admin Page
 
 Leon (DS):    - Chart Creation
+                    > chart showing money spent per type of bet (parlay, money line, spread)
+                    > chart showing money earned from bet type
               - Table Creation
+                    > table that records bets and results from a database
               - Reports
 
 
