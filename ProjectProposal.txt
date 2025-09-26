@@ -1,0 +1,29 @@
+Project Proposal
+
+Your first assignment is to properly describe and plan out your project deciding what you will offer. The proposal needs to:
+
+    Fully outline the scope of what you will accomplish
+    How the work will be split between team members
+    What you will have completed (and submitted) by the project milestone
+
+
+Only one proposal submission is required per team.
+
+
+
+
+
+For our project, we want to build a sports betting tracker to allow user to track their spendings and earnings. The user can input their bets and earnings and it will display a chart showing trends. 
+
+  The website will have an intro page showing off the useful links that a user can access. They will be able to register and the data will be stored in a log where they can log-in and log-out. The 
+user will then have access to all links that is useful to sports, including a link to track spendings and earnings. We plan to use some data science to make the graph nice and easy to read. Admin 
+privieges include access to data gathering by using some elements from lab 4 and data statistics that can track data from all users. 
+
+Caden (DS):   - Registration
+              - Chart creation
+              - Table creation
+
+Calvin (CS):  - Intro page
+              - Log-in/Log-Out
+              - Admin Page
+
