@@ -32,5 +32,6 @@ Leon (DS):    - Chart Creation
               - Reports
 
 
-We will submit an intro page
+We will submit an intro page with the ability for the user to log-in and log-out. We will also make the tracker the user can use to track spendings and earnings. We plan to create tables and charts
+for the second submission as we think it make take longer to make those requirements.
 
