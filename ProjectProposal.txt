@@ -27,3 +27,7 @@ Calvin (CS):  - Intro page
               - Log-in/Log-Out
               - Admin Page
 
+Leon (DS):    - Chart Creation
+              - Table Creation
+              - Reports
+
