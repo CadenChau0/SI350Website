@@ -1,0 +1,26 @@
+body {
+    margin: 5px;
+}
+
+img.img1 {
+  height: 50px;
+  width: 50px;
+}
+.navbar {
+  padding: 6px 8px;
+}
+
+.navbar a {
+  color: #c2160a;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 6px 10px;
+}
+
+.navbar ul {
+  list-style-type: none;
+}
+
+.navbar .nav-align {
+  text-align: right;
+}
