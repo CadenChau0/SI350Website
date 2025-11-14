@@ -34,3 +34,7 @@ img.img1 {
 .navbar .nav-align {
   text-align: right;
 }
+
+.btn-primary {
+  background-color: #c2160a;
+}
