@@ -68,7 +68,6 @@
                 xhttp.onload = function () {
 
                     winningsData = JSON.parse(this.responseText);
-                    console.log("Loaded winnings:", winningsData);
 
                     populateTable();
                     drawChart();
@@ -110,7 +109,7 @@
                         datasets: [{
                             label: "Total Winnings ($)",
                             data: values,
-                            backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                            backgroundColor: 'rgba(194, 22, 10, 0.7)'
                         }]
                     },
                     options: {
