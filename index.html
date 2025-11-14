@@ -36,7 +36,95 @@
         </nav>
 
         <h1 class="text-center">Sports Analytics</h1>
-        <h4 class="text-center">Track your betting here</h4>
+        <h4 class="text-center">Winnings from Each Sport</h4>
+
+        <div class="container mt-4">
+            <h5>Total Winnings Table</h5>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Sport</th>
+                        <th>Total Winnings ($)</th>
+                    </tr>
+                </thead>
+                <tbody id="winningsTable"></tbody>
+            </table>
+        </div>
+
+        <div class="container mt-4">
+            <h5>Winnings by Sport</h5>
+            <canvas id="winningsChart"></canvas>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            let winningsData = [];
+
+            function showWinnings() {
+
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.onload = function () {
+
+                    winningsData = JSON.parse(this.responseText);
+                    console.log("Loaded winnings:", winningsData);
+
+                    populateTable();
+                    drawChart();
+                };
+
+                xhttp.open("GET", "winnings.json");
+                xhttp.send();
+            }
+
+
+            function populateTable() {
+
+                var html = "";
+
+                for (var i = 0; i < winningsData.length; i++) {
+                    var row = winningsData[i];
+
+                    html += "<tr>"
+                        + "<td>" + row.sport + "</td>"
+                        + "<td>" + row.gain.toFixed(2) + "</td>"
+                        + "</tr>";
+                }
+
+                document.getElementById("winningsTable").innerHTML = html;
+            }
+
+
+            function drawChart() {
+
+                const labels = winningsData.map(item => item.sport);
+                const values = winningsData.map(item => item.gain);
+
+                const ctx = document.getElementById('winningsChart').getContext('2d');
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Total Winnings ($)",
+                            data: values,
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        scales: {
+                            x: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+
+            document.addEventListener("DOMContentLoaded", showWinnings);
+        </script>
 
     </body>
 
