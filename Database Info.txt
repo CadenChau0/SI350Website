@@ -1,0 +1,27 @@
+Using SQL Database to store users and bets (chatgpt said it would make everything run faster than just logging in a file)
+
+Should already be set up, not sure if you guys can access it but the way to login to it is:
+run: mysql -h db.cs.usna.edu -u m260378 -pm260378 m260378 -fcvvv
+then run: use m260378;
+- the tables users and bets should be in this database
+
+Schemas:
+users
+- id INT AUTO_INCREMENT PRIMARY KEY,
+- username VARCHAR(200) NOT NULL,
+- password_hash VARCHAR(255) NOT NULL,
+- created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+- admin TINYINT(1) NOT NULL DEFAULT 0
+
+bets
+- id INT AUTO_INCREMENT PRIMARY KEY,
+- user_id INT NOT NULL,
+- date DATE NOT NULL,
+- bet_type VARCHAR(50) NOT NULL,
+- amount_spent DECIMAL(10,2) NOT NULL,
+- amount_earned DECIMAL(10,2) NOT NULL,
+- FOREIGN KEY (user_id) REFERENCES users(id)
+- sport VARCHAR(50)
+
+I can adjust the schema to match what we do for the register.html and login.html, just wanted to get the base code done.
+I will add the code necessary to put users and bets into the database, so don't worry about including that in your code.
