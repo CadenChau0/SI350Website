@@ -27,24 +27,48 @@
 
 <?php
 session_start();
-$userName = $_POST['username'];
-$userPassword = $_POST['password'];
+require_once "db.php"; //connect to database
+
+// Only allow POST access
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    header("Location: login.html");
+    exit();
+}
+
+//trim username and password:
+$userName = trim($_POST['username']);
+$userPassword = trim($_POST['password']);
+
 $valid = false;
 
-$file = fopen("LOG.txt", "r");
+// ------------------------------------
+// Look up user
+// ------------------------------------
+$stmt = $pdo->prepare("SELECT id, username, password_hash, admin 
+                       FROM users 
+                       WHERE username = ?");
+$stmt->execute([$userName]);
 
-while (($line = fgets($file)) !== false) {
-    list($name, $password) = explode(":", trim($line));
-    if ($userName === $name && $userPassword === $password) {
-        $valid = true;
-        break;
-    }
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// If user not found and check password
+if (!$user) {
+    header("Location: login.html");
+    exit();
+} //now check the password
+else if (!password_verify($userPassword, $user['password_hash'])) {
+    header("Location: login.html");
+    exit();
+} else {
+    $valid = true;
 }
-fclose($file);
 
 
+//now set the valid variable and allow login!
 if ($valid) {
-    $_SESSION['username'] = $userName;
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['admin'] = $user['admin'];
+
     header("Location: index.html");
     exit();
 }
