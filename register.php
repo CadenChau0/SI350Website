@@ -39,13 +39,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     );
     $insert->execute([$username, $hashedPassword, 0]);
 
+    $newId = $pdo->lastInsertId();
+
     // ----------------------------------
     // Auto-login after registration
     // ----------------------------------
+    $_SESSION['user_id'] = $newId;
     $_SESSION['username'] = $username;
-    $_SESSION['admin'] = 0;   // store numeric admin flag
+    $_SESSION['is_admin'] = 0;    // store numeric admin flag
 
-    header("Location: statistics.php");
+    header("Location: stat_dashboard.php");
     exit;
 }
 ?>
