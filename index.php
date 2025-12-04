@@ -18,7 +18,9 @@ $is_admin = isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : 0;
 <head>
     <meta charset="UTF-8">
     <title>Home - Betting Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <link type="text/css" rel="stylesheet" href="styles.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
         /* Live Search Styles */
@@ -92,27 +94,64 @@ $is_admin = isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : 0;
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <img class="img1" title="bettinglogo" src="sportsbetting.jpg" />
+            <a class="navbar" href="index.php">Sports Analytics</a>
 
-<!-- NAV BAR -->
-<nav>
-    <ul>
-        <li><a href="index.php">Home</a></li>
-        <li><a href="sports.php">Sports</a></li>
-        <li><a href="log_bet.php">Log Bet</a></li>
-        <li><a href="stat_dashboard.php">Stats Dashboard</a></li>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#nav" aria-controls="nav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <?php if (!$username): ?>
-            <li style="float:right"><a href="login.php">Login</a></li>
-        <?php else: ?>
-            <li style="float:right"><a href="logout.php">Logout</a></li>
-            <li style="float:right"><a href="profile.php"><?php echo htmlspecialchars($username); ?></a></li>
-        <?php endif; ?>
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav mb-lg-0">
 
-        <?php if ($is_admin == 1): ?>
-            <li><a href="admin.php">Admin</a></li>
-        <?php endif; ?>
-    </ul>
-</nav>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="sports.php">Sports</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="stat_dashboard.php">Statistics</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="log_bet.php">Log Bet</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="registration.html">Registration</a>
+                    </li>
+
+                    <?php if (!$username): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.php">Login</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout.php">Logout</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="stat_dashboard.php">
+                                <?= htmlspecialchars($username) ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <!-- Admin link -->
+                    <?php if ($is_admin == 1): ?>
+                        <li class="nav-item"><a class="nav-link" href="admin.php">Admin</a></li>
+                    <?php endif; ?>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
 
 <div class="container">
     <h1>Welcome to Your Betting Tracker</h1>
