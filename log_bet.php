@@ -7,6 +7,9 @@ if (!isset($_SESSION['user_id'])) {
 
 require_once "db.php";  // use your main DB connection file
 
+$username = $_SESSION['username'] ?? null;
+$is_admin = $_SESSION['is_admin'] ?? 0;
+
 $message = ""; // Status message
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -49,21 +52,73 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Log Bet</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
-<!-- NAV BAR -->
-<nav>
-    <ul>
-        <li><a href="index.php">Home</a></li>
-        <li><a href="stat_dashboard.php">Stats Dashboard</a></li>
-        <li><a href="log_bet.php">Log Bet</a></li>
-        <li><a href="logout.php">Logout</a></li>
-    </ul>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <img class="img1" title="bettinglogo" src="sportsbetting.jpg" />
+        <a class="navbar" href="index.php">Sports Analytics</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#nav" aria-controls="nav" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="sports.php">Sports</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="stat_dashboard.php">Statistics</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="log_bet.php">Log Bet</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="registration.html">Registration</a>
+                </li>
+
+                <?php if (!$username): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Login</a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="stat_dashboard.php">
+                            <?= htmlspecialchars($username) ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if ($is_admin == 1): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin.php">Admin</a>
+                    </li>
+                <?php endif; ?>
+
+            </ul>
+        </div>
+    </div>
 </nav>
 
-<h1>Log a Bet</h1>
+<h3>Log a Bet</h3>
 
 <?= $message ?>
 
@@ -79,7 +134,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </select><br><br>
 
     <label>Sport:</label><br>
-    <input type="text" name="sport" placeholder="NBA, NFL, MLB..." required><br><br>
+    <input type="text" id="sport" name="sport" placeholder="NBA, NFL, MLB..." 
+        onkeyup="showSportHint()" autocomplete="off" required><br>
+    <small>Suggestions: <span id="sportHint"></span></small><br><br>
 
     <label>Amount Spent:</label><br>
     <input type="number" step="0.01" name="amount_spent" required><br><br>
@@ -89,6 +146,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <button type="submit">Submit Bet</button>
 </form>
+
+<script>
+    function showSportHint() {
+
+
+        const input = document.getElementById("sport").value;
+
+
+
+        if (input.length === 0) {
+            document.getElementById("sportHint").innerHTML = "";
+            return;
+        }
+
+
+
+        const xhttp = new XMLHttpRequest();
+
+
+        xhttp.onload = function () {
+            document.getElementById("sportHint").innerHTML = this.responseText;
+        };
+
+        
+
+        xhttp.open("GET", "get_sports.php?q=" + encodeURIComponent(input));
+        xhttp.send();
+    }
+</script>
+
 
 </body>
 </html>
