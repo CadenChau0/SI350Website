@@ -29,21 +29,62 @@ session_start();
      <?php
 session_start();
 ?>
-<nav>
-    <ul>
-        <li><a href="index.php">Home</a></li>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <img class="img1" title="bettinglogo" src="sportsbetting.jpg" />
+        <a class="navbar" href="index.php">Sports Analytics</a>
 
-        <?php if (isset($_SESSION['user_id'])): ?>
-            <!-- LINKS FOR LOGGED-IN USERS -->
-            <li><a href="stat_dashboard.php">Stats Dashboard</a></li>
-            <li><a href="log_bet.php">Log Bet</a></li>
-            <li><a href="logout.php">Logout</a></li>
-        <?php else: ?>
-            <!-- LINKS FOR LOGGED-OUT USERS -->
-            <li><a href="login.html">Login</a></li>
-            <li><a href="registration.html">Register</a></li>
-        <?php endif; ?>
-    </ul>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#nav" aria-controls="nav" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="sports.php">Sports</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="stat_dashboard.php">Statistics</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="log_bet.php">Log Bet</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="registration.html">Registration</a>
+                </li>
+
+                <?php if (!$username): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Login</a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="stat_dashboard.php">
+                            <?= htmlspecialchars($username) ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if ($is_admin == 1): ?>
+                    <li class="nav-item"><a class="nav-link" href="admin.php">Admin</a></li>
+                <?php endif; ?>
+
+            </ul>
+        </div>
+    </div>
 </nav>
 
 
@@ -157,8 +198,111 @@ session_start();
                 });
             }
 
-            document.addEventListener("DOMContentLoaded", showWinnings);
+            function loadStats() {
+                var xhr = new XMLHttpRequest();
+
+                xhr.onload = function () {
+                    var stats = JSON.parse(this.responseText);
+
+                    // Expect keys: sports_by_profit, sports_by_volume
+                    populateProfitTable(stats.sports_by_profit);
+                    populateVolumeTable(stats.sports_by_volume);
+                };
+
+                xhr.open("GET", "stats.json");
+                xhr.send();
+            }
+
+            function formatMoney(value) {
+                return "$" + value.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+
+            function formatPercent(value) {
+                return (value * 100).toFixed(1) + "%";
+            }
+
+            function populateProfitTable(data) {
+                let html = "";
+
+                data.forEach(row => {
+                    html += "<tr>"
+                        + "<td>" + row.sport + "</td>"
+                        + "<td>" + row.num_bets + "</td>"
+                        + "<td>" + row.num_wins + "</td>"
+                        + "<td>" + formatMoney(row.total_stake) + "</td>"
+                        + "<td>" + formatMoney(row.profit) + "</td>"
+                        + "<td>" + formatPercent(row.roi) + "</td>"
+                        + "</tr>";
+                });
+
+        document.getElementById("profitTable").innerHTML = html;
+    }
+
+    function populateVolumeTable(data) {
+        let html = "";
+
+        data.forEach(row => {
+            html += "<tr>"
+                + "<td>" + row.sport + "</td>"
+                + "<td>" + row.num_bets + "</td>"
+                + "<td>" + row.num_wins + "</td>"
+                + "<td>" + formatMoney(row.total_stake) + "</td>"
+                + "<td>" + formatMoney(row.profit) + "</td>"
+                + "<td>" + formatPercent(row.roi) + "</td>"
+                + "</tr>";
+        });
+
+        document.getElementById("volumeTable").innerHTML = html;
+    }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            showWinnings();
+            loadStats();
+        });
         </script>
+
+
+        <div class="container mt-4">
+            <h5>Sports Ranked by Profit</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered w-100">
+                    <thead>
+                        <tr>
+                            <th>Sport</th>
+                            <th>Number Bets</th>
+                            <th>Number Wins</th>
+                            <th>Total Stake ($)</th>
+                            <th>Profit ($)</th>
+                            <th>ROI (Return on Investment)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="profitTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <h5>Sports Ranked by Volume</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered w-100">
+                    <thead>
+                        <tr>
+                            <th>Sport</th>
+                            <th>Number Bets</th>
+                            <th>Number Wins</th>
+                            <th>Total Stake ($)</th>
+                            <th>Profit ($)</th>
+                            <th>ROI (Return on Investment)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="volumeTable"></tbody>
+                </table>
+            </div>
+        </div>
+
 
     </body>
 
