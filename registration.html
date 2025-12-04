@@ -52,23 +52,38 @@
 
 <body id="register-pge">
     <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <img class="img1" title="bettinglogo" src="../../images/sportsbetting.jpg"/>
-                <a class="navbar" href="index.html">Sports Analytics</a>
+        <div class="container-fluid">
+            <img class="img1" title="bettinglogo" src="sportsbetting.jpg" />
+            <a class="navbar" href="index.php">Sports Analytics</a>
 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#nav" aria-controls="nav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <div class="collapse navbar-collapse" id="nav">
-                    <ul class="navbar-nav mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="registration.html">Registration</a></li>
-                        <li class="nav-item"><a class="nav-link" href="statistics.html">Statistics</a></li>
-                        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="logout.html">Logout</a></li>
-                    </ul>
-
-                </div>
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="registration.html">Registration</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="stat_dashboard.php">Statistics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
+
 
     <div class="container mt-5">
         <h2 class="text-center mb-4">Register</h2>
