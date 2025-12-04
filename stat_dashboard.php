@@ -8,8 +8,9 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
-$username = $_SESSION['username'];
+$user_id  = $_SESSION['user_id'];
+$username = $_SESSION['username'] ?? null;
+$is_admin = $_SESSION['is_admin'] ?? 0;
 
 // Debug mode ON — remove later
 ini_set('display_errors', 1);
@@ -84,8 +85,10 @@ $avg_earned = count($betData) ? $total_earned / count($betData) : 0;
 <html>
 <head>
     <title><?= htmlspecialchars($username) ?>'s Betting Dashboard</title>
+    <link type="text/css" rel="stylesheet" href="styles.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link type="text/css" rel="stylesheet" href="style.css?v=123">
 
     <style>
         body { font-family: Arial; margin: 20px; }
@@ -97,25 +100,65 @@ $avg_earned = count($betData) ? $total_earned / count($betData) : 0;
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <img class="img1" src="../../images/sportsbetting.jpg" />
-        <a class="navbar-brand" href="index.php">Sports Analytics</a>
+        <div class="container-fluid">
+            <img class="img1" title="bettinglogo" src="sportsbetting.jpg" />
+            <a class="navbar" href="index.php">Sports Analytics</a>
 
-        <div class="collapse navbar-collapse" id="nav">
-            <ul class="navbar-nav mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="registration.html">Registration</a></li>
-                <li class="nav-item"><a class="nav-link active" href="stat_dashboard.php">Statistics</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
-            </ul>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#nav" aria-controls="nav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="sports.php">Sports</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="stat_dashboard.php">Statistics</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="log_bet.php">Log Bet</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="registration.html">Registration</a>
+                    </li>
+
+                    <?php if (!$username): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.php">Login</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout.php">Logout</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="stat_dashboard.php">
+                                <?= htmlspecialchars($username) ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php if ($is_admin == 1): ?>
+                        <li class="nav-item"><a class="nav-link" href="admin.php">Admin</a></li>
+                    <?php endif; ?>
+
+                </ul>
+            </div>
         </div>
-    </div>
 </nav>
 
-<h1><?= htmlspecialchars($username) ?>'s Betting Dashboard</h1>
+<h3><?= htmlspecialchars($username) ?>'s Betting Dashboard</h3>
 
 <!-- Dropdown -->
 <label>Select Bet Type:</label>
@@ -175,7 +218,7 @@ document.getElementById("chartTypeSelector").addEventListener("change", function
 updateChart("all");
 </script>
 
-<h2>Your Bet History</h2>
+<h4>Your Bet History</h4>
 <table>
     <thead>
         <tr>
@@ -206,7 +249,7 @@ updateChart("all");
     </tfoot>
 </table>
 
-<h2>Statistical Report</h2>
+<h4>Statistical Report</h4>
 <table>
     <tr><th>Total Spent</th><td>$<?= number_format($total_spent, 2) ?></td></tr>
     <tr><th>Total Earned</th><td>$<?= number_format($total_earned, 2) ?></td></tr>
@@ -215,7 +258,7 @@ updateChart("all");
     <tr><th>Average Earned Per Bet</th><td>$<?= number_format($avg_earned, 2) ?></td></tr>
 </table>
 
-<h3>Totals by Bet Type</h3>
+<h4>Totals by Bet Type</h4>
 <table>
     <tr>
         <th>Type</th>
