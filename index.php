@@ -153,6 +153,15 @@ $is_admin = isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : 0;
         </div>
     </nav>
 
+<?php if (isset($_GET['logged_out'])): ?>
+    <div class="container mt-4">
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+            <strong>Logged out successfully!</strong> See you next time.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+<?php endif; ?>
+
 <div class="container">
     <h1>Welcome to Your Betting Tracker</h1>
     <p>Search through your history of bets below.</p>
